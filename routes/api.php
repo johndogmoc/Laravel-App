@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\ProfileController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -14,6 +16,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Profiles API
+Route::get('/profiles', [ProfileController::class, 'index']);
+Route::get('/profiles/archived', [ProfileController::class, 'archived']);
+Route::post('/profiles', [ProfileController::class, 'store']);
+Route::put('/profiles/{profile}', [ProfileController::class, 'update']);
+Route::delete('/profiles/{profile}', [ProfileController::class, 'destroy']);
+Route::post('/profiles/{profile}/archive', [ProfileController::class, 'archive']);
+Route::post('/profiles/{profile}/unarchive', [ProfileController::class, 'unarchive']);

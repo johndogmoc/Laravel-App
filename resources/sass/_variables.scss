@@ -5,3 +5,60 @@ $body-bg: #f8fafc;
 $font-family-sans-serif: 'Nunito', sans-serif;
 $font-size-base: 0.9rem;
 $line-height-base: 1.6;
+
+// ---- App Theme Variables (added) ----
+// Brand palette
+$blue-300: #60a5fa;
+$blue-500: #3b82f6;
+$blue-600: #2563eb;
+$blue-700: #1d4ed8;
+
+$teal-400: #2dd4bf;
+$purple-400: #e879f9;
+
+// Neutrals
+$text-dark: #111827;    // used inside inputs
+$text-light: #ffffff;   // used on dark/glass backgrounds
+$muted: #6b7280;        // secondary labels
+
+// Glass backgrounds
+$glass-card: linear-gradient(135deg, rgba($teal-400, 0.70), rgba($purple-400, 0.70));
+$glass-input: linear-gradient(135deg, rgba(255,255,255,0.45), rgba(255,255,255,0.30));
+$glass-dark: rgba(17, 24, 39, 0.55); // Lists panel
+
+// Borders / outlines
+$border-light: rgba(255,255,255,0.55);
+$border-lighter: rgba(255,255,255,0.35);
+
+// Effects
+$blur-strong: blur(10px) saturate(140%);
+$blur-soft: blur(6px) saturate(130%);
+
+$shadow-card: 0 26px 64px rgba(0,0,0,.24);
+$shadow-panel: 0 28px 64px rgba(0,0,0,0.18);
+$shadow-btn-blue: 0 10px 20px rgba(37,99,235,.35);
+
+// Radii
+$radius-lg: 20px;
+$radius-md: 16px;
+$radius-round: 999px;
+
+// Spacing and sizing
+$container-max-w: 840px;         // welcome card
+$container-max-w-wide: 1280px;   // lists panel
+$field-height: 62px;
+$button-height: 70px;
+$spacing-field: 24px;
+
+// Gradients and brand buttons
+$btn-primary-gradient: linear-gradient(135deg, $blue-700 0%, #0ea5e9 100%);
+$link-gradient: linear-gradient(135deg, #0ea5e9 0%, $blue-600 60%, $blue-700 100%);
+
+// Expose some as CSS variables if needed
+:root {
+  --text-light: #{$text-light};
+  --text-dark: #{$text-dark};
+  --muted: #{$muted};
+  --border-light: #{$border-light};
+  --border-lighter: #{$border-lighter};
+}

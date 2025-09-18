@@ -1,0 +1,57 @@
+// variables are already imported via app.scss
+
+/* Lists page styles extracted from inline CSS */
+:root {
+  --panel-bg: rgba(236, 240, 243, 0.85);
+  --panel-border: rgba(255, 255, 255, 0.5);
+  --text: #2b2f33;
+  --muted: #6b7280;
+  --input-bg: #ffffff;
+  --input-border: #e5e7eb;
+  --radius: 16px;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, 'Apple Color Emoji', 'Segoe UI Emoji';
+  color: var(--text);
+  background:
+    radial-gradient(1200px 800px at 10% 100%, #60e6ff 0%, rgba(96,230,255,0) 60%),
+    radial-gradient(1000px 700px at 85% 25%, #ff4d8f 0%, rgba(255,77,143,0) 60%),
+    radial-gradient(1000px 600px at 50% -10%, #1e3a8a 0%, rgba(30,58,138,0) 60%),
+    radial-gradient(1000px 600px at -10% -10%, #000000 0%, rgba(0,0,0,0) 60%),
+    linear-gradient(180deg, #0b0b10 0%, #0b0b10 100%);
+  background-attachment: fixed;
+}
+
+main { min-height: 100%; display: grid; place-items: center; padding: 48px 24px; }
+
+/* container */
+.panel { width: 100%; max-width: $container-max-w-wide; background: $glass-dark; backdrop-filter: $blur-strong; -webkit-backdrop-filter: $blur-strong; border: 1px solid $border-lighter; border-radius: $radius-lg; box-shadow: $shadow-panel; padding: 32px; color: $text-light; }
+.header { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:18px; }
+.title { margin:0; font-weight:900; letter-spacing:.01em; color:$text-light; font-size: 28px; }
+.tools { display:flex; gap:12px; align-items:center; }
+.btn { display:inline-flex; align-items:center; justify-content:center; height:46px; padding:0 16px; border-radius:12px; border:1px solid $border-lighter; background: rgba(255,255,255,0.12); cursor:pointer; font-weight:700; font-size: 15px; color:$text-light; }
+.btn-primary { background: linear-gradient(135deg,#22c55e,#16a34a); color:#fff; border-color:transparent; box-shadow: 0 12px 22px rgba(34,197,94,.35); }
+.btn-secondary { background: rgba(255,255,255,0.16); }
+.search { width:320px; height:46px; border-radius:12px; border:1px solid $border-lighter; padding:0 14px; outline:none; font-size:15px; background: rgba(255,255,255,0.12); color:$text-light; }
+
+/* table */
+.table-wrap { overflow:auto; border-radius: 14px; background: rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.25); }
+table { width:100%; border-collapse: collapse; font-size: 16px; color:$text-light; }
+thead th { text-align:left; font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:$text-light; background: rgba(255,255,255,0.06); padding:16px; border-bottom:1px solid rgba(255,255,255,0.22); user-select:none; }
+.sortable { cursor:pointer; }
+.sort-ind { margin-left:6px; color:#94a3b8; }
+tbody td { padding:18px 16px; border-bottom:1px solid rgba(255,255,255,0.12); color:$text-light; }
+tbody tr:hover { background: rgba(255,255,255,0.06); }
+.badge { display:inline-flex; align-items:center; gap:6px; padding:4px 8px; border-radius:999px; background:#f1f5f9; color:#0f172a; font-weight:600; }
+.actions { display:flex; gap:8px; }
+.link { color:#93c5fd; text-decoration:none; }
+.link:hover { text-decoration:underline; }
+.cell-input { width:100%; height:42px; border:1px solid $border-lighter; border-radius:10px; padding:0 10px; font-size:15px; background: rgba(255,255,255,0.12); color:$text-light; }
+.cell-actions { display:flex; gap:10px; }
+.nav { margin-bottom: 12px; }
+.nav a { color:#2563eb; text-decoration:none; }
+.nav a:hover { text-decoration:underline; }
