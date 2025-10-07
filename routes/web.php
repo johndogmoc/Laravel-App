@@ -13,88 +13,14 @@
   /*
   |--------------------------------------------------------------------------
   | Web Routes
-  |--------------------------------------------------------------------------
   | routes are loaded by the RouteServiceProvider and all of them will be
   | assigned to the "web" middleware group. Make something great!
   |
   */
 
-  // Auth: Login + Register (guest only)
+  // Auth: Guest routes (admin + password reset only)
   Route::middleware('guest')->group(function () {
-      // Login UI
-      Route::get('/login', function () {
-          return view('auth.login');
-      })->name('login');
-
-      // Login handler
-      Route::post('/login', function (Request $request) {
-          $credentials = $request->validate([
-              'email' => ['required', 'email'],
-              'password' => ['required'],
-          ]);
-
-          $remember = (bool) $request->boolean('remember');
-          if (Auth::attempt($credentials, $remember)) {
-              $request->session()->regenerate();
-              return redirect()->intended('/');
-          }
-
-          return back()->withErrors([
-              'email' => 'The provided credentials do not match our records.',
-          ])->onlyInput('email');
-      })->name('login.perform');
-
-      // Register UI
-      Route::get('/register', function () {
-          return view('auth.register');
-      })->name('register');
-
-      // Register handler
-      Route::post('/register', function (Request $request) {
-          $data = $request->validate([
-              'first_name' => ['required','string','max:255'],
-              'last_name' => ['required','string','max:255'],
-              'middle_name' => ['nullable','string','max:255'],
-              'sex' => ['nullable','string','max:20'],
-              'email' => ['required','email','max:255','unique:users,email'],
-              'phone' => ['nullable','string','max:50'],
-              'password' => ['required','confirmed','min:6'],
-              'dob_month' => ['nullable','integer','between:1,12'],
-              'dob_day' => ['nullable','integer','between:1,31'],
-              'dob_year' => ['nullable','integer', 'between:1900,' . date('Y')],
-              'gender' => ['nullable','string','max:10'],
-          ]);
-
-          $user = User::create([
-              'name' => trim(($data['first_name'] ?? '').' '.($data['last_name'] ?? '')),
-              'email' => $data['email'],
-              'password' => Hash::make($data['password']),
-          ]);
-
-          // Optionally create a Profile if model/table exists
-          try {
-              if (class_exists(Profile::class)) {
-                  Profile::create([
-                      'first_name' => $data['first_name'] ?? null,
-                      'last_name' => $data['last_name'] ?? null,
-                      'email' => $data['email'] ?? null,
-                  ]);
-              }
-          } catch (\Throwable $e) {
-              // Ignore profile creation errors to not block signup
-          }
-
-          Auth::login($user);
-          $request->session()->regenerate();
-          return redirect()->intended('/');
-      })->name('register.perform');
-
-      // Admin Login UI
-      Route::get('/admin/login', function () {
-          return view('auth.admin-login');
-      })->name('admin.login');
-
-      // Forgot Password UI
+      // Forgot Password UI (for admin)
       Route::get('/forgot-password', function () {
           return view('auth.forgot-password');
       })->name('password.request');
@@ -103,14 +29,17 @@
       Route::post('/forgot-password', function (Request $request) {
           $request->validate(['email' => 'required|email']);
 
-          $status = Password::sendResetLink(
-              $request->only('email')
-          );
+          $status = Password::sendResetLink($request->only('email'));
 
           return $status === Password::RESET_LINK_SENT
-                      ? back()->with(['status' => __($status)])
-                      : back()->withErrors(['email' => __($status)]);
+              ? back()->with(['status' => __($status)])
+              : back()->withErrors(['email' => __($status)]);
       })->name('password.email');
+
+      // Admin Login UI
+      Route::get('/admin/login', function () {
+          return view('auth.admin-login');
+      })->name('admin.login');
 
       // Reset Password UI
       Route::get('/reset-password/{token}', function (string $token) {
@@ -139,8 +68,8 @@
           );
 
           return $status === Password::PASSWORD_RESET
-                      ? redirect()->route('login')->with('status', __($status))
-                      : back()->withErrors(['email' => [__($status)]]);
+                     ? redirect()->route('admin.login')->with('status', __($status))
+                     : back()->withErrors(['email' => [__($status)]]);
       })->name('password.update');
 
       // Admin Login handler (same users table; requires is_admin=true)
@@ -177,12 +106,12 @@
       Auth::guard()->logout();
       $request->session()->invalidate();
       $request->session()->regenerateToken();
-      return redirect('/login');
+      return redirect()->route('admin.login');
   })->name('logout');
 
-  // Redirect guests at root to register first
+  // Redirect guests at root to Admin login
   Route::get('/', function () {
-      return redirect()->route('register');
+      return redirect()->route('admin.login');
   })->middleware('guest');
 
   // Dedicated page to display the Names List

@@ -75,9 +75,7 @@
               <label class="checkbox"><input type="checkbox" name="remember"> Save Password</label>
               <a href="{{ route('password.request') }}">Forgot Password?</a>
             </div>
-            <div style="margin-top:10px;text-align:center;">
-              <a href="{{ route('login') }}" style="color:#d8f0ff;font-size:14px;">Student Login</a>
-            </div>
+            
             @if ($errors->any())
               <div style="margin-top:10px;color:#ffe2e2;background:#7f1d1d33;border:1px solid #fecaca;padding:10px;border-radius:8px;">
                 <strong>Login failed:</strong>
