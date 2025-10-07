@@ -18,59 +18,13 @@
   |
   */
 
-  // Auth: Guest routes (admin + password reset only)
+  // Auth: Guest routes (admin only)
   Route::middleware('guest')->group(function () {
-      // Forgot Password UI (for admin)
-      Route::get('/forgot-password', function () {
-          return view('auth.forgot-password');
-      })->name('password.request');
-
-      // Forgot Password handler (send reset link)
-      Route::post('/forgot-password', function (Request $request) {
-          $request->validate(['email' => 'required|email']);
-
-          $status = Password::sendResetLink($request->only('email'));
-
-          return $status === Password::RESET_LINK_SENT
-              ? back()->with(['status' => __($status)])
-              : back()->withErrors(['email' => __($status)]);
-      })->name('password.email');
-
       // Admin Login UI
       Route::get('/admin/login', function () {
           return view('auth.admin-login');
       })->name('admin.login');
 
-      // Reset Password UI
-      Route::get('/reset-password/{token}', function (string $token) {
-          return view('auth.reset-password', ['token' => $token, 'email' => request('email')]);
-      })->name('password.reset');
-
-      // Reset Password handler
-      Route::post('/reset-password', function (Request $request) {
-          $request->validate([
-              'token' => 'required',
-              'email' => 'required|email',
-              'password' => 'required|min:6|confirmed',
-          ]);
-
-          $status = Password::reset(
-              $request->only('email', 'password', 'password_confirmation', 'token'),
-              function (User $user, string $password) {
-                  $user->forceFill([
-                      'password' => Hash::make($password)
-                  ])->setRememberToken(Str::random(60));
-
-                  $user->save();
-
-                  event(new PasswordReset($user));
-              }
-          );
-
-          return $status === Password::PASSWORD_RESET
-                     ? redirect()->route('admin.login')->with('status', __($status))
-                     : back()->withErrors(['email' => [__($status)]]);
-      })->name('password.update');
 
       // Admin Login handler (same users table; requires is_admin=true)
       Route::post('/admin/login', function (Request $request) {
