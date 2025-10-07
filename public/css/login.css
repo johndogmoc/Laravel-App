@@ -1,0 +1,253 @@
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}
+
+body.login-body {
+  margin: 0;
+  font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  background: #0a1524;
+  color: #e5f3ff;
+}
+
+.login-container {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 6px solid #0d2741;
+}
+
+.panel {
+  position: relative;
+}
+
+.panel.left {
+  background: #c8f1fb;
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+  border-right: 3px solid #0d2741;
+}
+
+.logo-block {
+  z-index: 1;
+  text-align: center;
+  color: #0b1f37;
+}
+
+.logo-block h1 {
+  margin-top: 0.75rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.cap-svg {
+  width: 180px;
+  height: 180px;
+  margin: 0 auto;
+}
+
+.pattern {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(#0b1f37 2px, transparent 2px);
+  background-size: 32px 32px;
+  opacity: 0.4;
+}
+
+.panel.right {
+  background: linear-gradient(135deg, #4b1db1 0%, #12c2cf 100%);
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+}
+
+.form-wrap {
+  width: 100%;
+  max-width: 460px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.brand h2 {
+  margin: 0;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+}
+
+.cap-small {
+  width: 48px;
+  height: 48px;
+}
+
+.input-label {
+  display: block;
+  margin: 0.5rem 0 0.35rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.input {
+  width: 100%;
+  padding: 0.85rem 1.1rem;
+  border-radius: 1.5rem;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.9);
+  color: #333;
+  outline: none;
+  font-size: 0.95rem;
+}
+
+.input::-moz-placeholder {
+  color: #888;
+}
+
+.input::placeholder {
+  color: #888;
+}
+
+.input:focus {
+  border-color: #fff;
+  background: rgb(255, 255, 255);
+}
+
+.input.select {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="8"><path fill="%23666" d="M0 0l6 8 6-8z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+}
+
+.password-field {
+  position: relative;
+}
+
+.password-field .eye {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: 0;
+  color: #fff;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0.6rem 0;
+  font-size: 0.9rem;
+  color: #aac4d6;
+}
+
+.remember {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.link {
+  color: #c3e8ff;
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.subtext {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  color: #aac4d6;
+  margin-bottom: 0.9rem;
+  font-size: 0.9rem;
+}
+
+.subtext .spacer {
+  flex: 1;
+}
+
+.btn-primary {
+  display: inline-block;
+  border: 0;
+  background: #16a34a;
+  color: #fff;
+  padding: 0.7rem 1.25rem;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.btn-primary:hover {
+  filter: brightness(1.05);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem 1rem;
+}
+
+.form-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-item.span-2 {
+  grid-column: span 2;
+}
+
+.radio-row {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 0.35rem;
+}
+
+.radio {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.radio input[type=radio] {
+  width: 18px;
+  height: 18px;
+}
+
+.error {
+  color: #fca5a5;
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+}
+
+@media (max-width: 900px) {
+  .login-container {
+    grid-template-columns: 1fr;
+  }
+  .panel.left {
+    display: none;
+  }
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+  .form-item.span-2 {
+    grid-column: span 1;
+  }
+}
