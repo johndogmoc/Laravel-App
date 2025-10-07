@@ -73,7 +73,6 @@
             </div>
             <div class="row">
               <label class="checkbox"><input type="checkbox" name="remember"> Save Password</label>
-              <a href="{{ route('password.request') }}">Forgot Password?</a>
             </div>
             
             @if ($errors->any())
