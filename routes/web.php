@@ -20,27 +20,42 @@
 
   // Auth: Guest routes (admin only)
   Route::middleware('guest')->group(function () {
+      // Regular user login route
+      Route::get('/login', function () {
+          return view('auth.login');
+      })->name('login');
+      
+      // Regular user login handler
+      Route::post('/login', function (Request $request) {
+          $validated = $request->validate([
+              'email' => ['required','email'],
+              'password' => ['required','string'],
+          ]);
+
+          $remember = (bool)$request->boolean('remember');
+          if (Auth::attempt(['email' => $validated['email'], 'password' => $validated['password']], $remember)) {
+              $request->session()->regenerate();
+              return redirect()->intended('/dashboard');
+          }
+
+          return back()->withErrors(['email' => 'Invalid credentials.'])->onlyInput('email');
+      })->name('login.perform');
+      
       // Admin Login UI
       Route::get('/admin/login', function () {
           return view('auth.admin-login');
       })->name('admin.login');
 
 
-      // Admin Login handler (same users table; requires is_admin=true)
+      // Admin Login handler (email only; requires is_admin=true)
       Route::post('/admin/login', function (Request $request) {
-          $credentials = $request->validate([
-              'email' => ['required','string'], // can be shown as Username or Email
+          $validated = $request->validate([
+              'email' => ['required','email'],
               'password' => ['required','string'],
           ]);
 
-          // In case you later support username/phone, map here. For now treat as email.
-          if (filter_var($credentials['email'], FILTER_VALIDATE_EMAIL)) {
-              $attempt = ['email' => $credentials['email'], 'password' => $credentials['password']];
-          } else {
-              $attempt = ['email' => $credentials['email'], 'password' => $credentials['password']];
-          }
-
-          if (Auth::attempt($attempt, (bool)$request->boolean('remember'))) {
+          $remember = (bool)$request->boolean('remember');
+          if (Auth::attempt(['email' => $validated['email'], 'password' => $validated['password']], $remember)) {
               $request->session()->regenerate();
               if (Auth::user() && Auth::user()->is_admin) {
                   return redirect()->intended('/admin');
@@ -52,7 +67,7 @@
               return back()->withErrors(['email' => 'You are not authorized to access the admin area.']);
           }
 
-          return back()->withErrors(['email' => 'Invalid admin credentials.'])->onlyInput('email');
+          return back()->withErrors(['email' => 'Invalid admin credentials. Please use your email address.'])->onlyInput('email');
       })->name('admin.login.perform');
   });
 
@@ -63,23 +78,60 @@
       return redirect()->route('admin.login');
   })->name('logout');
 
-  // Redirect guests at root to Admin login
+  // Root: redirect to dashboard if admin, otherwise to login
   Route::get('/', function () {
-      return redirect()->route('admin.login');
-  })->middleware('guest');
-
-  // Dedicated page to display the Names List
-  Route::get('/Lists', function () {
-      return view('lists');
-  })->middleware('auth');
-  
-  // Simple Admin Dashboard placeholder (auth + is_admin)
-  Route::get('/admin', function (Request $request) {
-      if (!Auth::check() || !Auth::user()->is_admin) {
-          return redirect()->route('admin.login')->withErrors(['email' => 'Please sign in as admin.']);
+      if (Auth::check() && Auth::user()->is_admin) {
+          return redirect()->route('admin.dashboard');
       }
-      return view('admin.dashboard');
-  })->name('admin.dashboard');
+      return redirect()->route('admin.login');
+  });
+
+  // Admin Register UI: always show the form
+  Route::get('/admin/register', function () {
+      return view('auth.admin-register');
+  })->name('admin.register');
+
+  // Admin Register POST (guest only): create admin, unique email enforced by validation
+  Route::middleware('guest')->group(function () {
+      Route::post('/admin/register', function (Request $request) {
+          $validated = $request->validate([
+              'name' => ['required','string','max:255'],
+              'email' => ['required','string','email','max:255','unique:users,email'],
+              'password' => ['required','confirmed','min:8'],
+          ]);
+
+          $user = User::create([
+              'name' => $validated['name'],
+              'email' => $validated['email'],
+              'password' => Hash::make($validated['password']),
+              'is_admin' => true,
+          ]);
+
+          return redirect()->route('admin.login')
+              ->with('status', 'Sign up complete');
+      })->name('admin.register.perform');
+  });
+
+  // Dedicated page to display the Names List (requires admin)
+  Route::middleware(['auth'])->group(function () {
+      Route::get('/Lists', function () {
+          if (!Auth::user()->is_admin) {
+              return redirect()->route('admin.login');
+          }
+          return view('lists');
+      });
+  });
+  
+  // Admin Dashboard (requires auth + is_admin)
+  Route::middleware(['auth'])->group(function () {
+      Route::get('/admin', function (Request $request) {
+          if (!Auth::user()->is_admin) {
+              Auth::logout();
+              return redirect()->route('admin.login')->withErrors(['email' => 'You are not authorized to access the admin area.']);
+          }
+          return view('admin.dashboard');
+      })->name('admin.dashboard');
+  });
 
   Route::get('/{any?}', function () {
       return view('welcome');

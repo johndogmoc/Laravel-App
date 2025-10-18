@@ -4,13 +4,13 @@
 <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Login • Starlink University</title>
+  <title>Login • Starlink University</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --left-bg:#c7f3ff; --right-a:#6a00ff; --right-b:#0aa3ff;
+      --left-bg:#c7f3ff; --right-a:#0aa3ff; --right-b:#6a00ff;
       --primary:#10b981; --ring:rgba(16,185,129,.35); --text:#0b1020;
     }
     *{box-sizing:border-box} html,body{height:100%}
@@ -48,8 +48,8 @@
     .btn-row{display:flex;justify-content:flex-end;margin-top:10px}
     .btn.btn-small{padding:10px 14px;font-size:16px;border-radius:10px}
     .checkbox{display:flex;align-items:center;gap:8px}
-    .btn{margin-top:14px;padding:18px 30px;border-radius:12px;border:0;background:#ef4444;color:#fff;font-weight:800;font-size:20px;cursor:pointer}
-    .btn:hover{background:#dc2626}
+    .btn{margin-top:14px;padding:18px 30px;border-radius:12px;border:0;background:#10b981;color:#fff;font-weight:800;font-size:20px;cursor:pointer}
+    .btn:hover{background:#059669}
     a{color:#d8f0ff;text-decoration:none}
     a:hover{text-decoration:underline}
     @media(max-width:900px){.page{grid-template-columns:1fr}.left{display:none}.right{min-height:100vh}}
@@ -84,12 +84,12 @@
           <img src="{{ asset('images/8907269.png') }}" alt="Starlink" style="width:64px;height:64px;object-fit:contain;" />
           <div>
             <div class="title">Starlink University</div>
-            <div class="subtitle" style="color:#000;font-weight:800;font-size:28px;">Welcome Back  Admin!</div>
+            <div class="subtitle" style="color:#000;font-weight:800;font-size:28px;">Welcome Back!</div>
             <div class="subtitle" style="color:#0b1020;opacity:.9;font-weight:600;">Login to your account</div>
           </div>
         </div>
         <div class="card">
-          <form method="POST" action="{{ route('admin.login.perform') }}">
+          <form method="POST" action="{{ route('login.perform') }}">
             @csrf
             <label class="label">Email Address</label>
             <div class="field" style="margin-top:8px;">
@@ -99,41 +99,33 @@
             <div class="field" style="margin-top:8px;">
               <input class="input" type="password" name="password" placeholder="Password" required />
             </div>
-            <div class="actions-row">
-              <div class="muted">Register Now! <a href="{{ route('admin.register') }}" style="color:#fff;">Create the first admin</a></div>
-              <label class="checkbox" style="color:#0b1020;"><input type="checkbox" name="remember"> Save Password</label>
-            </div>
             
             @if ($errors->any())
-              <div style="margin-top:10px;color:#ffe2e2;background:#7f1d1d33;border:1px solid #fecaca;padding:10px;border-radius:8px;">
-                <strong>Login failed:</strong>
-                <ul style="margin:6px 0 0 18px;">
-                  @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                  @endforeach
-                </ul>
-              </div>
+            <div style="margin-top:16px;color:#ef4444;font-weight:600;">
+                @foreach ($errors->all() as $error)
+                    <div>{{ $error }}</div>
+                @endforeach
+            </div>
             @endif
-            <div class="btn-row">
-              <button class="btn btn-small" type="submit">Sign In</button>
+            
+            <div class="actions-row">
+              <div class="checkbox">
+                <input type="checkbox" name="remember" id="remember" />
+                <label for="remember">Remember me</label>
+              </div>
+              <a href="#" class="muted">Forgot password?</a>
+            </div>
+            
+            <button type="submit" class="btn">Login</button>
+            
+            <div style="margin-top:16px;text-align:center;">
+              <span class="muted">Don't have an account?</span>
+              <a href="{{ url('/register') }}">Register</a>
             </div>
           </form>
         </div>
       </div>
     </div>
   </div>
-  @if (session('status'))
-    <div id="toast-status" style="position:fixed;top:16px;right:16px;z-index:9999;background:#10b981;color:#04210f;border:1px solid #34d399;padding:12px 14px;border-radius:10px;box-shadow:0 10px 24px rgba(0,0,0,.25);font-weight:700;">
-      {{ session('status') }}
-    </div>
-    <script>
-      (function(){
-        const el = document.getElementById('toast-status');
-        if (!el) return;
-        setTimeout(()=>{ el.style.transition = 'opacity .5s ease'; el.style.opacity = '0'; }, 2600);
-        setTimeout(()=>{ if(el && el.parentNode){ el.parentNode.removeChild(el);} }, 3200);
-      })();
-    </script>
-  @endif
 </body>
 </html>

@@ -13,34 +13,34 @@
     <script src="{{ mix('js/app.js') }}" defer></script>
   </head>
   <body>
-    <div class="top-left"><a class="btn-link" href="/Lists">View All Profiles</a></div>
+    <a class="btn-link top-left" href="/Lists">View All Profiles</a>
     <main class="page">
-      <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true" hidden>Profile added to the list!</div>
+      <span id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true" hidden>Profile added to the list!</span>
       <section class="split" aria-labelledby="add-profile-title">
-        <div class="panel-left">
-          <div class="brand">
-            <div class="brand-mark" aria-hidden="true"></div>
+        <section class="panel-left">
+          <header class="brand">
+            <span class="brand-mark" aria-hidden="true"></span>
             <h1 class="brand-title">Starlink University</h1>
-          </div>
-          <div class="pattern" aria-hidden="true"></div>
-        </div>
-        <div class="panel-right">
-          <div class="panel-right-inner">
+          </header>
+          <span class="pattern" aria-hidden="true"></span>
+        </section>
+        <section class="panel-right">
+          <section class="panel-right-inner">
             <h2 id="add-profile-title" class="title">Add New Profile</h2>
             <form id="profileForm" action="#" method="post" novalidate>
               <label class="sr-only" for="firstName">First Name</label>
               <input id="firstName" class="input" type="text" placeholder="First name" />
-              <div class="spacer"></div>
+              <span class="spacer"></span>
               <label class="sr-only" for="lastName">Last Name</label>
               <input id="lastName" class="input" type="text" placeholder="Last name" />
-              <div class="spacer"></div>
+              <span class="spacer"></span>
               <label class="sr-only" for="email">Email</label>
               <input id="email" class="input" type="email" placeholder="Email" />
-              <div class="spacer"></div>
+              <span class="spacer"></span>
               <button id="submitProfile" class="btn btn-primary" type="submit">Add Profile</button>
             </form>
-          </div>
-        </div>
+          </section>
+        </section>
       </section>
     </main>
 
